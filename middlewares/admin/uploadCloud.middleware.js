@@ -7,6 +7,7 @@ cloudinary.config({
     api_secret: process.env.CLOUD_SECRET
 })
 
+//
 module.exports.upload = (req, res, next) => {
     if (req.file) {
         let streamUpload = (req) => {
