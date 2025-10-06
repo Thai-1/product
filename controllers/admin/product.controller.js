@@ -41,14 +41,22 @@ module.exports.index = async (req, res) => {
     }, req.query, countProducts);
     // End Pagination
 
+    //Sort
+    let sort = {};
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    }
+    else
+    sort.position = "asc";
+    //End Sort
 
     const products = await Product.find(find)
-        .sort({ position: "asc" })
+        .sort(sort)
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip);
 
 
-    // console.log(products);
+
     const messages = req.flash("success");
 
     res.render("admin/pages/products/index", {

@@ -32,6 +32,7 @@ router.get("/edit/:id", controller.edit);
 
 router.post("/edit/:id",
     upload.single('thumbnail'),
+    uploadCloud.upload,
     validate.createPost,
     controller.editPatch
 );
