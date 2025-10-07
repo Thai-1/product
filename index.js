@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require ("path");
 const methodOveride = require("method-override");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -23,7 +24,6 @@ app.use(methodOveride('_method'));
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-
 const port = process.env.PORT;
 
 app.set('views', `${__dirname}/views`);
@@ -46,6 +46,10 @@ app.use(session({
 }));
 
 app.use(flash());
+
+
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
 
 //File pug nào cũng dùng được biến prefixAdmin
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
