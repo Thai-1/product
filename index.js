@@ -54,8 +54,6 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 //File pug nào cũng dùng được biến prefixAdmin
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-console.log(__dirname);
-
 app.use(express.static(`${__dirname}/public`));
 
 route(app);
