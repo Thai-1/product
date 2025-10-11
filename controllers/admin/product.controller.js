@@ -48,11 +48,11 @@ module.exports.index = async (req, res) => {
 
     //Sort
     let sort = {};
-    if(req.query.sortKey && req.query.sortValue) {
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue;
     }
     else
-    sort.position = "asc";
+        sort.position = "asc";
     //End Sort
 
     const products = await Product.find(find)
@@ -156,7 +156,7 @@ module.exports.deleteItem = async (req, res) => {
 
 //[GET] / admin/products/create
 module.exports.createItem = async (req, res) => {
-        let find = {
+    let find = {
         deleted: false
     }
 
@@ -192,27 +192,34 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/products`)
 }
 
-//[GET] / admin/products/:id
+//[GET] / admin/products/edit/:id
 module.exports.edit = async (req, res) => {
     try {
         const find = {
             deleted: false,
             _id: req.params.id
         }
+        const category = await ProductCategory.find({
+            deleted: false
+        });
 
+        const newCategory = createTreeHelper.tree(category);
         const product = await Product.findOne(find);
         res.render("admin/pages/products/edit", {
             pageTitle: "Sua san pham",
-            product
+            product: product,
+            category: newCategory
         })
 
-    } catch (error) {
+    } 
+    catch (error) {
+        console.log(error);
         res.redirect(`${systemConfig.prefixAdmin}/products`)
     }
 
 }
 
-//[PATCH] / admin/products/:id
+//[PATCH] / admin/products/edit:id
 module.exports.editPatch = async (req, res) => {
     req.body.price = parseInt(req.body.price)
     req.body.stock = parseInt(req.body.stock)
@@ -224,11 +231,11 @@ module.exports.editPatch = async (req, res) => {
 
     try {
         await Product.updateOne(
-            {_id: req.params.id},
+            { _id: req.params.id },
             req.body)
-        res.flash("success","Cap nhat thanh cong")
+        req.flash("success", "Cap nhat thanh cong")
     } catch (error) {
-        res.flash("error","Cap nhat that bai")
+        req.flash("error", "Cap nhat that bai")
 
     }
 
@@ -236,7 +243,7 @@ module.exports.editPatch = async (req, res) => {
 }
 
 //[GET] /admin/product/detail/:id
-module.exports.detail = async(req, res) => {
+module.exports.detail = async (req, res) => {
     try {
         const find = {
             deleted: false,
