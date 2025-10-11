@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-mongoose.plugin(slug);
 
 const roleSchema = new mongoose.Schema(
     {
@@ -21,6 +20,6 @@ const roleSchema = new mongoose.Schema(
     }
 );
 
-const Product = mongoose.model('Product', productSchema, "products");
+const Role = mongoose.model('Role', roleSchema, "roles");
 
-module.exports = Product;
+module.exports = Role;
