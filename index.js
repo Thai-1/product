@@ -46,6 +46,15 @@ app.use(session({
 }));
 
 app.use(flash());
+// Truyền flash message tới view
+app.use((req, res, next) => {
+    res.locals.messages = {
+        success: req.flash('success'),
+        error: req.flash('error')
+    };
+    next();
+});
+
 
 
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
