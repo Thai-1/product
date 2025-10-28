@@ -10,6 +10,9 @@ const roleRoutes = require("./role.route");
 
 const accountRoutes = require("./account.route");
 
+const authRoutes = require("./auth.route");
+
+
 
 
 module.exports = (app) => {
@@ -23,5 +26,7 @@ module.exports = (app) => {
     app.use(PathAdmin + '/roles', roleRoutes);
 
     app.use(PathAdmin + '/accounts', accountRoutes);
+
+    app.use(PathAdmin + '/auth', authRoutes);
 
 }

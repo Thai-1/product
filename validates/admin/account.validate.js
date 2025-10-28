@@ -13,7 +13,7 @@ module.exports.createPost = (req, res, next) => {
 
     if(!req.body.password) {
     req.flash("error", "Vui long nhap mat khau!");
-    res.redirect("back");
+    res.redirect("admin/auth/login");
     return;
     }
 
@@ -23,7 +23,8 @@ module.exports.createPost = (req, res, next) => {
 module.exports.editPatch = (req, res, next) => {
     if(!req.body.fullName) {
         req.flash("error", "Vui long nhap ho ten!");
-        res.redirect("back");
+            res.redirect("admin/auth/login");
+
         return;
     }
 
