@@ -7,7 +7,7 @@ const systemConfig = require("../../config/system")
 module.exports.login = (req, res) => {
     console.log(req.cookies.token)
     if (req.cookies.token)
-        res.redirec(`${systemConfig.prefixAdmin}/dashboard`)
+        res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
     else {
         res.render("admin/pages/auth/login", {
             pageTitle: "Trang dang nhap"
