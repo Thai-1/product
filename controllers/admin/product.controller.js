@@ -97,7 +97,7 @@ module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
     const updatedBy = {
-        account_id: String,
+        account_id: res.locals.user.id,
         updatedAt: new Date()
     }
     await Product.updateOne({ _id: id },
@@ -120,7 +120,7 @@ module.exports.changeMulti = async (req, res) => {
     const ids = req.body.ids.split(", ");
 
     const updatedBy = {
-        account_id: String,
+        account_id: res.locals.user.id,
         updatedAt: new Date()
     }
     switch (type) {
