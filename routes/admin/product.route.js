@@ -30,7 +30,7 @@ router.post('/create',
 
 router.get("/edit/:id", controller.edit);
 
-router.post("/edit/:id",
+router.patch("/edit/:id",
     upload.single('thumbnail'),
     uploadCloud.upload,
     validate.createPost,
