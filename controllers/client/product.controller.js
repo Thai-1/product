@@ -14,7 +14,6 @@ module.exports.index = async (req, res) => {
         return item;
     })
 
-    console.log(products);
 
     res.render("clients/pages/products/index", {
         pageTitle: "Danh sach san pham",
