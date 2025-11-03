@@ -1,0 +1,19 @@
+//- Mixin hiển thị thông báo thành công
+mixin alert-success(time)
+  - if (messages && messages.success && messages.success.length > 0)
+    .message.alert-success
+      div(
+        class="alert alert-success"
+        show-alert
+        data-time=time
+      ) #{messages.success[0]} <span close-alert>x</span>
+
+//- Mixin hiển thị thông báo lỗi
+mixin alert-error(time)
+  - if (messages && messages.error && messages.error.length > 0)
+    .message.alert-error
+      div(
+        class="alert alert-danger"
+        show-alert
+        data-time=time
+      ) #{messages.error[0]} <span close-alert>x</span>
