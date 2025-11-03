@@ -22,8 +22,7 @@ module.exports.index = async (req, res) => {
     });
 }
 
-//[GET] / products/:slug
-
+//[GET] / products/:slugProduct
 module.exports.detail = async (req, res) => {
     try {
         const find = {
@@ -32,6 +31,17 @@ module.exports.detail = async (req, res) => {
             status: "active"
         }
         const product = await Product.findOne(find);
+
+        if(product.product_category_id){
+            const category = await ProductCategory.findOne({
+                _id: product.product_category_id,
+                status: "active",
+                deleted: false
+            });
+
+            product.category = category; 
+        }
+        product.priceNew = productsHelper.priceNewProduct(product);
 
         res.render("clients/pages/products/detail", {
             pageTitle: product.title,
@@ -51,8 +61,6 @@ module.exports.category = async (req, res) => {
         status: "active",
         deleted: false
     })
-
-
 
     const listSubCategory = await productsCategoryHelper.getSubCategory(category.id);
     

@@ -22,6 +22,7 @@ module.exports.index = async (req, res) => {
     }).sort({position:"desc"}).limit(6);
 
     const newProductsNew = productsHelper.priceNewProducts(productsNew);
+
     // Hết lấy ra sản phẩm mới nhất
     res.render("clients/pages/home/index", {
         pageTitle: "Trang chu",
