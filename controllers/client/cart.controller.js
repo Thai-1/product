@@ -69,17 +69,55 @@ module.exports.index = async (req, res) => {
                 _id: productId,
             }).select("title thumbnail slug price discountPercentage")
 
-        productInfo.priceNew = productsHelper.priceNewProduct(productInfo)
+            productInfo.priceNew = productsHelper.priceNewProduct(productInfo)
 
-        item.totalPrice = productInfo.priceNew * item.quantity;
+            item.totalPrice = productInfo.priceNew * item.quantity;
 
-        item.productInfo = productInfo;// sẽ lưu tạm thời vào cart
+            item.productInfo = productInfo;// sẽ lưu tạm thời vào cart
         }
     }
     cart.totalPrice = cart.products.reduce((sum, item) => (sum + item.totalPrice), 0)
-    console.log(cart);
+
     res.render("clients/pages/cart/index", {
         pageTitle: "Gio hàng",
         cartDetail: cart
     })
+}
+
+//[GET] /cart/delete/:productId
+module.exports.delete = async (req, res) => {
+    const productId = req.params.productId;
+    const cartId = req.cookies.cartId;
+
+
+    await Cart.updateOne({
+        _id: cartId
+    }, {
+        $pull: {
+            products: {
+                product_id: {
+                    _id: productId
+                }
+            }
+        }
+    })
+    req.flash("success", "Da xoa thanh cong")
+    res.redirect(`/cart`);
+}
+
+//[GET] /update/:productId/:quantity
+module.exports.update = async (req, res) => {
+    const productId = req.params.productId;
+    const quantity = req.params.quantity
+    const cartId = req.cookies.cartId;
+
+    await Cart.updateOne({
+        _id: cartId,
+        "products.product_id": productId
+    }, {
+        $set: {"products.$.quantity": quantity}
+    })
+
+    req.flash("success","Cap nhat thanh cong")
+    res.redirect("/cart")
 }

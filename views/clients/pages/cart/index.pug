@@ -46,7 +46,7 @@ block main
                                 td #{item.totalPrice}
                                 td
                                     a(
-                                        href=`/cart/delete/:id`
+                                        href=`/cart/delete/${item.product_id}`
                                         class="btn btn-danger"
                                      ) Xóa
             
@@ -56,3 +56,5 @@ block main
 
     .text-right.mt-3
       a(href="/checkout", class="btn btn-success") THANH TOÁN
+
+    script(src="/js/cart.js")
