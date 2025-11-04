@@ -27,7 +27,7 @@ module.exports.detail = async (req, res) => {
     try {
         const find = {
             deleted: false,
-            slug: req.params.slug,
+            slug: req.params.slugProduct,
             status: "active"
         }
         const product = await Product.findOne(find);

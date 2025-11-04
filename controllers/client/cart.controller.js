@@ -1,5 +1,6 @@
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model")
+const productsHelper = require("../../helper/product")
 
 //[POST] /cart/add/:productID
 module.exports.addPost = async (req, res) => {
@@ -11,7 +12,11 @@ module.exports.addPost = async (req, res) => {
         _id: cartId
     })
 
-    const existProduct = cart.products.find(item => item.product_id == productId)
+
+    const existProduct = cart.products.find(
+        item => item.product_id.toString() === productId
+    );
+
     // Tồn tại sản phẩm trong giỏ hàng rồi, cập nhật lại SL
     if (existProduct) {
         await Cart.updateOne({
@@ -44,7 +49,37 @@ module.exports.addPost = async (req, res) => {
     const product = await Product.findOne({
         _id: productId
     })
-    
+
     req.flash("success", "Da them san pham vao gio hang");
     res.redirect(`/products/detail/${product.slug}`)
+}
+
+//[GET] /cart
+module.exports.index = async (req, res) => {
+    const cartId = req.cookies.cartId;
+
+    const cart = await Cart.findOne({
+        _id: cartId
+    })
+
+    if (cart.products.length > 0) {
+        for (const item of cart.products) {
+            const productId = item.product_id;
+            const productInfo = await Product.findOne({
+                _id: productId,
+            }).select("title thumbnail slug price discountPercentage")
+
+        productInfo.priceNew = productsHelper.priceNewProduct(productInfo)
+
+        item.totalPrice = productInfo.priceNew * item.quantity;
+
+        item.productInfo = productInfo;// sẽ lưu tạm thời vào cart
+        }
+    }
+    cart.totalPrice = cart.products.reduce((sum, item) => (sum + item.totalPrice), 0)
+    console.log(cart);
+    res.render("clients/pages/cart/index", {
+        pageTitle: "Gio hàng",
+        cartDetail: cart
+    })
 }
