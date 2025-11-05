@@ -8,6 +8,8 @@ const cartRouters = require("./cart.route");
 
 const checkoutRouters = require("./checkout.route");
 
+const userRouters = require("./user.route");
+
 const categoryMiddleware = require("../../middlewares/client/category.middleware")
 
 const cartMiddleware = require("../../middlewares/client/cart.middleware")
@@ -28,4 +30,7 @@ module.exports = (app) => {
     app.use('/cart',cartRouters);
 
     app.use('/checkout',checkoutRouters);
+
+    app.use('/user',userRouters);
+
 }
