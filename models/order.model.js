@@ -13,7 +13,7 @@ const oderSchema = new mongoose.Schema(
             {
                 product_id: String,
                 price: Number,
-                discounPercentage: Number,
+                discountPercentage: Number,
                 quantity: Number
             }
         ],

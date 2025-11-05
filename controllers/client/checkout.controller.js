@@ -66,17 +66,16 @@ module.exports.orderPost = async (req, res) => {
         objectProduct.price = productInfo.price;
 
         objectProduct.discountPercentage = productInfo.discountPercentage;
-
         products.push(objectProduct);
     }
-    const orderInfo = [{
+    const orderInfo = {
         cart_id: cartId,
         userInfo: userInfo,
         products: products
-    }]
+    }
 
     const order = new Order(orderInfo);
-    order.save();
+    await order.save();
     await Cart.updateOne({
         _id: cartId 
     },{
@@ -86,11 +85,31 @@ module.exports.orderPost = async (req, res) => {
     res.redirect(`/checkout/success/${order.id}`);
 }
 
-//[GET] /checkout/success/orderId
+//[GET] /checkout/success/:orderId
 module.exports.success= async(req, res) => {
 
+    const order = await Order.findOne({
+        _id: req.params.orderId
+    })
+
+    for(const product of order.products) {
+        const productInfo = await Product.findOne({
+            _id: product.product_id
+        }).select("title thumbnail");
+        
+        product.productInfo = productInfo;
+        product.priceNew = productsHelper.priceNewProduct(product);
+
+        product.totalPrice = product.priceNew * product.quantity;
+
+    }
+
+    order.totalPrice = order.products.reduce((sum, item) => sum + item.totalPrice, 0)
+
+    
     res.render("clients/pages/checkout/success", {
-        pageTitle: "Dat hang thanh cong"
+        pageTitle: "Dat hang thanh cong",
+        order: order
     })
 }
 
