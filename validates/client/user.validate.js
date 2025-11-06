@@ -20,3 +20,14 @@ module.exports.registerPost = (req, res, next) => {
 
     next();
 }
+
+module.exports.forgotPasswordPost = (req, res, next) => {
+    if (!req.body.email) {
+        req.flash("error", "Vui long nhap email!");
+        res.redirect("user/register");
+
+        return;
+    }
+    
+    next();
+}
