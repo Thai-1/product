@@ -69,6 +69,12 @@ app.use(express.static(`${__dirname}/public`));
 
 route(app);
 routeAdmin(app);
+app.get(/.*/, (req, res) => {
+    res.render("clients/pages/errors/404",{
+        pageTitle: "404 Not Found"
+    })
+})
+
 //chạy khi khởi động lại file index.js
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
