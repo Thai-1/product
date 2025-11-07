@@ -1,5 +1,7 @@
 const Product = require("../../models/product.model")
 
+const Cart = require("../../models/cart.model")
+
 const productsHelper = require("../../helper/product")
 
 //[GET] /
