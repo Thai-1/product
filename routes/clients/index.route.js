@@ -18,10 +18,14 @@ const userMiddleware = require("../../middlewares/client/user.middleware");
 
 const validate = require("../../validates/client/user.validate")
 
+const settingMiddleware = require("../../middlewares/client/setting.middleware")
+
 module.exports = (app) => {
     app.use(categoryMiddleware.category)
     app.use(cartMiddleware.cartId)
     app.use(userMiddleware.inforUser)
+    app.use(settingMiddleware.settingGeneral)
+
 
 
     app.use('/',homeRouters);
