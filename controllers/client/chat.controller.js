@@ -1,11 +1,47 @@
+const Chat = require("../../models/chat.moddule")
+const User = require("../../models/user.model")
+
+// [GET] /chat/
 module.exports.index = async (req, res) => {
-    //Socket IO
-    _io.on('connection', (socket) => {
-        console.log('a user connected', socket.id);
+    const userId = res.locals.user.id;
+    const fullName = res.locals.user.fullName;
+
+    // Socket IO
+    _io.once('connection', (socket) => {
+        socket.on("CLIENT_SEND_MESSAGE", async (content) => {
+            //Luu vao DB
+            const chat = new Chat({
+                user_id: userId,
+                content: content
+            })
+            await chat.save();
+
+            // Trả data về client
+            _io.emit("SERVER_RETURN_MESSAGE", {
+                fullName: fullName,
+                userId: userId,
+                content: content
+            })
+        })
     })
     // End Socket IO
 
+    // Lấy data từ DB
+    const chats = await Chat.find({
+        deleted: false
+    })
+    for (const chat of chats) {
+        const infoUser = await User.findOne({
+            _id: chat.user_id
+        }).select("fullName")
+
+        chat.infoUser = infoUser;
+    }
+    //  Hết lấy data từ DB
+
+
     res.render("clients/pages/chat/index", {
-        pageTitle: "Chat"
+        pageTitle: "Chat",
+        chats: chats
     })
 }
