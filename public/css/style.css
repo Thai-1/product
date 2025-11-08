@@ -367,3 +367,14 @@
   font-size: 16px;
 }
 /* End Chat */
+
+/* Emoji Icon */
+.tooltip {
+  display: none;
+  visibility: hidden;
+}
+.tooltip.shown {
+  visibility: visible;
+  opacity: 1;
+}
+/* End Emoji Icon */
