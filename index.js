@@ -1,13 +1,15 @@
 const express = require('express');
-const path = require ("path");
+const path = require("path");
 const methodOveride = require("method-override");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require("connect-flash");
 const moment = require("moment");
-
+const http = require('http');
+const { Server } = require("socket.io");
 require("dotenv").config();
+
 
 const database = require("./config/database")
 
@@ -27,23 +29,22 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 const port = process.env.PORT;
 
+// SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+global._io = io
+// End Socket IO
+
+
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
 
-
-//flash
-// app.use(session({
-//     secret: "keyMySet",       // chuỗi bí mật
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { maxAge: 60000 } // 1 phút
-// }));
 app.use(cookieParser("keyMySet")); // cookieParser riêng
 app.use(session({
-    secret: "keyMySet",       
+    secret: "keyMySet",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 } 
+    cookie: { maxAge: 60000 }
 }));
 
 app.use(flash());
@@ -70,12 +71,12 @@ app.use(express.static(`${__dirname}/public`));
 route(app);
 routeAdmin(app);
 app.get(/.*/, (req, res) => {
-    res.render("clients/pages/errors/404",{
+    res.render("clients/pages/errors/404", {
         pageTitle: "404 Not Found"
     })
 })
 
 //chạy khi khởi động lại file index.js
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 }) 

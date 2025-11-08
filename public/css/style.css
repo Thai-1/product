@@ -247,3 +247,123 @@
     cursor: pointer;
 }
 /* End Show Alert */
+
+/* Chat */
+/* Chat container */
+.chat {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fafafa;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Body (khung tin nhắn) */
+.chat .inner-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 20px;
+  scroll-behavior: smooth;
+}
+
+/* Thanh cuộn mảnh, tinh tế */
+.chat .inner-body::-webkit-scrollbar {
+  width: 6px;
+}
+.chat .inner-body::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* Tin nhắn chung */
+.chat .inner-incoming,
+.chat .inner-outgoing {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  clear: both;
+}
+
+/* Tin nhắn đến */
+.chat .inner-incoming .inner-name {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.chat .inner-incoming .inner-content {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  max-width: 75%;
+  align-self: flex-start;
+  word-wrap: break-word;
+}
+
+/* Tin nhắn gửi đi */
+.chat .inner-outgoing .inner-content {
+  background-color: #fe5da3;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 16px 16px 4px 16px;
+  max-width: 75%;
+  align-self: flex-end;
+  word-wrap: break-word;
+}
+
+/* Phần nhập nội dung */
+.chat .inner-foot {
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+
+.chat .inner-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat .inner-form input {
+  flex: 1;
+  height: 38px;
+  border: 1px solid #ccc;
+  border-radius: 18px;
+  padding: 0 14px;
+  outline: none;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+
+.chat .inner-form input:focus {
+  border-color: #fe5da3;
+  box-shadow: 0 0 0 2px rgba(254,93,163,0.1);
+}
+
+.chat .inner-form button {
+  border: none;
+  background-color: #fe5da3;
+  color: #fff;
+  border-radius: 18px;
+  height: 38px;
+  width: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.chat .inner-form button:hover {
+  background-color: #e74d93;
+}
+
+.chat .inner-form button i {
+  font-size: 16px;
+}
+/* End Chat */
