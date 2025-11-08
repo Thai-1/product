@@ -68,9 +68,18 @@ if(emojiPicker) {
         inputChat.value = inputChat.value + icon;
     })
 }
-//End Insert Icon to Input
 
+// Input Keyup
+inputChat.addEventListener("keyup", () => {
+    socket.emit("CLIENT_SEND_TYPING", "show");
+})
+
+//End Input Keyup
+
+
+//End Insert Icon to Input
 //END SHOW ICON CHAT
+
 
 
 

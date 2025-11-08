@@ -19,9 +19,10 @@
   flex-wrap: wrap;
 }
 
-.header .inner-menu> ul > li {
+.header .inner-menu>ul>li {
   margin-left: 20px;
 }
+
 /* End Header */
 
 /* Footer */
@@ -31,6 +32,7 @@
   text-align: center;
   padding: 10px;
 }
+
 /* End Footer */
 
 /*box-head*/
@@ -44,6 +46,7 @@
   font-weight: 600;
   color: green;
 }
+
 /* End box-head */
 
 /* product-item */
@@ -108,6 +111,7 @@
   padding: 3px 10px;
   border-radius: 8px;
 }
+
 /* End product-item */
 
 /* sub-menu */
@@ -195,7 +199,7 @@
   border-radius: 8px;
 }
 
-.product-detail .inner-stock span{
+.product-detail .inner-stock span {
   color: #ffff;
   background: green;
 }
@@ -213,39 +217,41 @@
 
 /* Show Alert */
 [show-alert] {
-    position: fixed;
-    top: 70px;
-    right: 15px;
-    z-index: 9999;
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  z-index: 9999;
 }
 
 [show-alert].alert-hidden {
-    animation-name: alert-hidden;
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
+  animation-name: alert-hidden;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
 }
 
 @keyframes alert-hidden {
-    from {
-        right: 15px;
-    }
-    to {
-        right: -100%;
-        display: none;
-    }
+  from {
+    right: 15px;
+  }
+
+  to {
+    right: -100%;
+    display: none;
+  }
 }
 
 [show-alert] [close-alert] {
-    background: #ffffffc4;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    font-weight: 600;
-    border-radius: 50%;
-    cursor: pointer;
+  background: #ffffffc4;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 50%;
+  cursor: pointer;
 }
+
 /* End Show Alert */
 
 /* Chat */
@@ -259,7 +265,7 @@
   display: flex;
   flex-direction: column;
   height: 550px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Body (khung tin nhắn) */
@@ -274,6 +280,7 @@
 .chat .inner-body::-webkit-scrollbar {
   width: 6px;
 }
+
 .chat .inner-body::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
@@ -342,7 +349,7 @@
 
 .chat .inner-form input:focus {
   border-color: #fe5da3;
-  box-shadow: 0 0 0 2px rgba(254,93,163,0.1);
+  box-shadow: 0 0 0 2px rgba(254, 93, 163, 0.1);
 }
 
 .chat .inner-form button {
@@ -366,6 +373,7 @@
 .chat .inner-form button i {
   font-size: 16px;
 }
+
 /* End Chat */
 
 /* Emoji Icon */
@@ -373,8 +381,62 @@
   display: none;
   visibility: hidden;
 }
+
 .tooltip.shown {
   visibility: visible;
   opacity: 1;
 }
+
 /* End Emoji Icon */
+
+/* box-typing */
+.box-typing {
+  position: relative;
+}
+
+.box-typing .inner-dots {
+  position: relative;
+  height: 20px;
+  width: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #efefef;
+  border-radius: 45px;
+  margin-top: 2px;
+}
+
+.box-typing .inner-dots span {
+  animation: blink 1.5s infinite;
+  height: 5px;
+  width: 5px;
+  background: #252525;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.box-typing .inner-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.box-typing .inner-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.1;
+  }
+
+  20% {
+    opacity: 1;
+
+  }
+  100% {
+    opacity: 0.1;
+
+  }
+}
+
+/* End box-typing */
