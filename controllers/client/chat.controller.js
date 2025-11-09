@@ -1,6 +1,9 @@
 const Chat = require("../../models/chat.moddule")
 const User = require("../../models/user.model")
 
+const uploadToCloudinary = require("../../helper/uploadToCloudinary")
+
+
 // [GET] /chat/
 module.exports.index = async (req, res) => {
     const userId = res.locals.user.id;
@@ -8,11 +11,19 @@ module.exports.index = async (req, res) => {
 
     // Socket IO
     _io.once('connection', (socket) => {
-        socket.on("CLIENT_SEND_MESSAGE", async (content) => {
+        socket.on("CLIENT_SEND_MESSAGE", async (data) => {
+            let images = [];
+
+            for (const imageBuffer of data.images) {
+                const link = await uploadToCloudinary(imageBuffer);
+                images.push(link);
+            }
+
             //Luu vao DB
             const chat = new Chat({
                 user_id: userId,
-                content: content
+                content: data.content,
+                images: images
             })
             await chat.save();
 
@@ -20,7 +31,8 @@ module.exports.index = async (req, res) => {
             _io.emit("SERVER_RETURN_MESSAGE", {
                 fullName: fullName,
                 userId: userId,
-                content: content
+                content: data.content,
+                images: images
             })
         })
         // Typing
