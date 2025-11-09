@@ -23,18 +23,16 @@ module.exports.index = async (req, res) => {
                 content: content
             })
         })
-    })
-
-    // Typing
-    socket.on("CLIENT_SEND_TYPING", async (type) => {
-        socket.broadcast.emit("SERVER_RETURN_TYPING", {
-            fullName: fullName,
-            userId: userId,
-            type: type
+        // Typing
+        socket.on("CLIENT_SEND_TYPING", async (type) => {
+            socket.broadcast.emit("SERVER_RETURN_TYPING", {
+                fullName: fullName,
+                userId: userId,
+                type: type
+            })
         })
+        // End Typing
     })
-    // End Typing
-
     // End Socket IO
 
     // Lấy data từ DB
@@ -49,9 +47,6 @@ module.exports.index = async (req, res) => {
         chat.infoUser = infoUser;
     }
     //  Hết lấy data từ DB
-
-
-
 
     res.render("clients/pages/chat/index", {
         pageTitle: "Chat",
