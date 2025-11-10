@@ -1,21 +1,23 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
-//file-upload-with-preview
-const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
-    multiple: true,
-    maxFileCount: 6
-});
-//End file-upload-with-preview
+// file-upload-with-preview
+const upload = new FileUploadWithPreview.FileUploadWithPreview(
+    'upload-images',
+    {
+        multiple: true,
+        maxFileCount: 6
+    }
+);
+// End file-upload-with-preview
 
 
-//CLIENT_SEND_MESSAGE
-const formSendData = document.querySelector(".chat .inner-form")
+// CLIENT_SEND_MESSAGE
+const formSendData = document.querySelector(".chat .inner-form");
 if (formSendData) {
     formSendData.addEventListener("submit", (e) => {
         e.preventDefault();
         const content = e.target.elements.content.value;
         const images = upload.cachedFileArray;
-
 
         if (content || images.length > 0) {
             socket.emit("CLIENT_SEND_MESSAGE", {
@@ -23,83 +25,84 @@ if (formSendData) {
                 images: images
             });
             e.target.elements.content.value = "";
-            upload.resetPreviewPanel();
+            upload.resetPreviewPanel(); // clear all selected images
             socket.emit("CLIENT_SEND_TYPING", "hidden");
         }
-    })
+    });
 }
-//END CLIENT_SEND_MESSAGE
+// End CLIENT_SEND_MESSAGE
 
-//SERVER RETURN MESSAGE
+// SERVER_RETURN_MESSAGE
 socket.on("SERVER_RETURN_MESSAGE", (data) => {
-    const myId = document.querySelector("[my-id]").getAttribute("my-id")
-    const body = document.querySelector(".chat .inner-body")
-    const boxTyping = document.querySelector(".chat .inner-list-typing")
+    const myId = document.querySelector("[my-id]").getAttribute("my-id");
+    const body = document.querySelector(".chat .inner-body");
+    const boxTyping = document.querySelector(".chat .inner-list-typing"); // Dòng này bị cắt và có thể lỗi cú pháp
 
     const div = document.createElement("div");
-    let htmlFullName = "";
+    var htmlFullName = "";
     let htmlContent = "";
     let htmlImages = "";
 
     if (myId == data.userId) {
         div.classList.add("inner-outgoing");
     } else {
-        htmlFullName = `<div class ="inner-name">${data.fullName}</div>`
+        htmlFullName = `<div class="inner-name">${data.fullName}</div>`; // Dòng này bị cắt
         div.classList.add("inner-incoming");
     }
-    if(data.content) {
+
+    if (data.content) {
         htmlContent = `
-        <div class="inner-content">${data.content}</div>
+            <div class="inner-content">${data.content}</div>
         `;
     }
 
-    if(data.images.length > 0) {
-        htmlImages = `<div class="inner-images">`;
-
-        for( const image of data.images) {
+    if (data.images.length > 0) {
+        htmlImages += `<div class="inner-images">`;
+        for (const image of data.images) {
             htmlImages += `<img src="${image}">`;
         }
-            
-            // <img src="https://res.cloudinary.com/dxhwpfxxn/image/upload/v1698852711/uhzwsdv9lchqtchqq2f0.png">;
         htmlImages += `</div>`;
-    }
+    } 
 
     div.innerHTML = `
-        ${htmlFullName}
-        ${htmlContent}
-        ${htmlImages}
-        `;
+    ${htmlFullName}
+    ${htmlContent}
+    ${htmlImages}
+`;
 
     body.insertBefore(div, boxTyping);
 
-    bodyChat.scrollTop = bodyChat.scrollHeight;
-    //Preview Images
+    body.scrollTop = body.scrollHeight;
+
+    // Preview Images 
     const gallery = new Viewer(div);
 
-})
-//END SERVER RETURN MESSAGE
+});
+// End SERVER_RETURN_MESSAGE
 
 // Scroll Chat To Bottom
 const bodyChat = document.querySelector(".chat .inner-body");
 if (bodyChat) {
     bodyChat.scrollTop = bodyChat.scrollHeight;
 }
+// End Scroll Chat To Bottom
 
-//End Scroll Chat To Bottom
 
-
-//SHOW ICON CHAT
-const buttonIcon = document.querySelector('.button-icon')
+// Show Icon Chat
+// Show Popup
+const buttonIcon = document.querySelector(".button-icon");
 if (buttonIcon) {
-    const tooltip = document.querySelector('.tooltip')
-    Popper.createPopper(buttonIcon, tooltip)
+    const tooltip = document.querySelector(".tooltip");
+    Popper.createPopper(buttonIcon, tooltip);
 
     buttonIcon.onclick = () => {
-        tooltip.classList.toggle('shown');
-    }
+        tooltip.classList.toggle("shown");
+    };
 }
+// End Show Popup
 
-// Show Typing 
+
+// Show Typing
 var timeOut;
 const showTyping = () => {
     socket.emit("CLIENT_SEND_TYPING", "show");
@@ -108,90 +111,80 @@ const showTyping = () => {
 
     timeOut = setTimeout(() => {
         socket.emit("CLIENT_SEND_TYPING", "hidden");
-    }, 3000)
-
+    }, 3000);
 }
+// End Show Typing
 
-// End show typing
-
-
-//Insert Icon to Input
-var timeOut;
-
+// Insert Icon To Input
 const emojiPicker = document.querySelector("emoji-picker");
 if (emojiPicker) {
-    const inputChat = document.querySelector(".chat .inner-form input[name='conent']");
+    const inputChat = document.querySelector(".chat .inner-form input[name='content']");
     emojiPicker.addEventListener("emoji-click", (event) => {
         const icon = event.detail.unicode;
         inputChat.value = inputChat.value + icon;
 
-        input.setSelectionRange(inputChat.value.length, inputChat.value.length);
+        const end = inputChat.value.length;
+        inputChat.setSelectionRange(end, end);
         inputChat.focus();
+
         showTyping();
-    })
+    });
+
+    // Input Keyup
+    inputChat.addEventListener("keyup", () => {
+        showTyping();
+    });
 }
-//End Insert Icon to Input
 
-// Input Keyup
+// End Input Keyup
 
-inputChat.addEventListener("keyup", () => {
+// End Insert Icon To Input
+// End Show Icon Chat
 
-    showTyping();
-})
-
-//End Input Keyup
-
-//END SHOW ICON CHAT
-
-//SERVER_RETURN_TYPING
+// SERVER_RETURN_TYPING
 const elementListTyping = document.querySelector(".chat .inner-list-typing");
 
 if (elementListTyping) {
-    socker.on("SERVER_RETURN_TYPING", (data) => {
+    socket.on("SERVER_RETURN_TYPING", (data) => {
         console.log(data);
         if (data.type == "show") {
-            const bodyChat = elementListTyping.querySelector(".chat .inner-body")
-            const existTyping = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
+            const bodyChat = document.querySelector(".chat .inner-body");
+            const existTyping = elementListTyping.querySelector(`[user-id="${data.userId}"]`);
 
             if (!existTyping) {
-                const boxTyping = document.createElement("..");
+                const boxTyping = document.createElement("div");
                 boxTyping.classList.add("box-typing");
                 boxTyping.setAttribute("user-id", data.userId);
+
                 boxTyping.innerHTML = `
-                <div class="box-typing">
                     <div class="inner-name">${data.fullName}</div>
                     <div class="inner-dots">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                </div>
-            `;
+                `;
 
                 elementListTyping.appendChild(boxTyping);
                 bodyChat.scrollTop = bodyChat.scrollHeight;
             }
-        }
-        else {
-            const boxTypingRemove = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
+        } else {
+            const boxTypingRemove = elementListTyping.querySelector(`[user-id="${data.userId}"]`);
             if (boxTypingRemove) {
                 elementListTyping.removeChild(boxTypingRemove);
             }
         }
-    })
+    });
 }
-//END SERVER_RETURN_TYPING
+
+// End SERVER_RETURN_TYPING
 
 // Preview Full Image
 const bodyChatPreviewImage = document.querySelector(".chat .inner-body");
-if(bodyChatPreviewImage) {
+if (bodyChatPreviewImage) {
     const gallery = new Viewer(bodyChatPreviewImage);
 }
 // End Preview Full Image
-
-
-
-
 
 
 

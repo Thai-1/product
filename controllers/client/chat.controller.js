@@ -1,4 +1,4 @@
-const Chat = require("../../models/chat.moddule")
+const Chat = require("../../models/chat.model")
 const User = require("../../models/user.model")
 
 const chatSocket = require("../../sockets/client/chat.socket")
