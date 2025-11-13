@@ -1,12 +1,11 @@
-const Chat = require("../../models/chat.model")
+const Chat = require("../../models/chat.moddule")
 
 const uploadToCloudinary = require("../../helper/uploadToCloudinary")
 
 
-module.exports = (res) => {
+module.exports = () => {
     const userId = res.locals.user.id;
     const fullName = res.locals.user.fullName;
-
     _io.once('connection', (socket) => {
         socket.on("CLIENT_SEND_MESSAGE", async (data) => {
             let images = [];
