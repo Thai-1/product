@@ -7,6 +7,9 @@ router.get("/not-friend", controller.notFriend);
 
 router.get("/request", controller.requestFriend);
 
+router.get("/accept", controller.acceptFriend);
+
+
 
 
 module.exports=router;
