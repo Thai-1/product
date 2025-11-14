@@ -20,7 +20,7 @@ module.exports = (res) => {
                     $push: { acceptFriends: myUserId }
                 })
             }
-            //Thêm id của B vào acceptFriends của A
+            //Thêm id của B vào requestFriends của A
             const exisId_B_in_A = await User.findOne({
                 _id: myUserId,
                 requestFriends: userId
@@ -32,6 +32,18 @@ module.exports = (res) => {
                     $push: { requestFriends: userId }
                 })
             }
+
+            // Lấy ra độ dài acceptFriends của B và trả về cho B
+            const infoUserB = await User.findOne({
+                _id: userId 
+            });
+            const lengthAcceptFriends = infoUserB.acceptFriends.length;
+
+            socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+                userId: userId,
+                lengthAcceptFriends: lengthAcceptFriends
+            })
+
         })
 
         //Chức năng hủy gửi yêu cầu
