@@ -89,6 +89,9 @@ if (dataUsersAccept) {
             // Vẽ user ra giao diện
             const div = document.createElement("div");
             div.classList.add("col-6");
+
+            div.setAttribute("user-id", data.infoUserA._id);
+
             div.innerHTML = `<div class="box-user"><div class="inner-avatar"><img src="https://robohash.org/hicveldicta.png" alt=${data.infoUserA.fullName}></div><div class="inner-info"><div class="inner-name">${data.infoUserA.fullName}</div><div class="inner-buttons"><button class="btn btn-sm btn-primary mr-1" btn-accept-friend=${data.infoUserA.fullName._id}>Chấp nhận</button><button class="btn btn-sm btn-secondary mr-1" btn-refuse-friend="690b7dd3ba50861aad2e8211">Xóa </button><button class="btn btn-sm btn-secondary mr-1" btn-deleted-friend="690b7dd3ba50861aad2e8211" disabled="">Đã xóa </button><button class="btn btn-sm btn-secondary mr-1" btn-accepted-friend="690b7dd3ba50861aad2e8211" disabled="">Đã chấp nhận</button></div></div></div></div>`
 
             dataUsersAccept.appendChild(div);
@@ -109,3 +112,17 @@ if (dataUsersAccept) {
     })
 }
 //END SERVER_RETURN_INFO_ACCEPT_FRIEND
+
+
+// SERVER_RETURN_USER_ID_CANCEL_FRIEND
+socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
+    const boxUserRemove = document.querySelector(`[user-id='${data.userIdA}']`);
+    if(boxUserRemove) {
+        const dataUsersAccept = document.querySelector("[data-users-accept]");
+        const userIdB = badgeUsersAccept.getAttribute("badge-users-accept");
+        if(userIdB == data.userIdB)
+            dataUsersAccept.removeChild(boxUserRemove);
+    }
+})
+
+// END SERVER_RETURN_USER_ID_CANCEL_FRIEND
