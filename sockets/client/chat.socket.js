@@ -1,4 +1,4 @@
-const Chat = require("../../models/chat.moddule")
+const Chat = require("../../models/chat.module")
 
 const uploadToCloudinary = require("../../helper/uploadToCloudinary")
 

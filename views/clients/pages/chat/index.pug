@@ -8,7 +8,7 @@ block main
 
     .container.my-3
         include ../../partials/list-btn-users.pug
-
+        
         .row
             .col-12
                 +box-head("Chat")
@@ -40,3 +40,8 @@ block main
 
     div(class="tooltip" role="tooltip")
         emoji-picker(class ="light")
+
+
+
+block script 
+    script(type="module" src="/js/chat.js") 
