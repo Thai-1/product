@@ -16,3 +16,5 @@ module.exports.inforUser = async(req, res, next) => {
 
     next();
 }
+
+

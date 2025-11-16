@@ -11,3 +11,7 @@ if (showAlert) {
         showAlert.classList.add("alert-hidden");
     })
 }
+
+//Detect broser or tab closing
+
+//END Detect broser or tab closing
