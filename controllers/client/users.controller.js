@@ -35,7 +35,7 @@ module.exports.notFriend = async (req, res) => {
     })
 }
 
-module.exports.requestFriend = async(req, res) => {
+module.exports.requestFriend = async (req, res) => {
     //SOCKET
     usersSocket(res);
     //END SOCKET
@@ -49,17 +49,17 @@ module.exports.requestFriend = async(req, res) => {
     const requestFriends = myUser.requestFriends;
 
     const users = await User.find({
-        _id: {$in: requestFriends},
+        _id: { $in: requestFriends },
         status: "active",
         deleted: false
     }).select("id avatar fullName");
     res.render("clients/pages/users/request", {
-        pageTitle:"Loi moi da gui",
+        pageTitle: "Loi moi da gui",
         users: users,
     })
 }
 
-module.exports.acceptFriend = async(req, res) => {
+module.exports.acceptFriend = async (req, res) => {
     //SOCKET
     usersSocket(res);
     //END SOCKET
@@ -73,13 +73,40 @@ module.exports.acceptFriend = async(req, res) => {
     const acceptFriends = myUser.acceptFriends;
 
     const users = await User.find({
-        _id: {$in: acceptFriends},
+        _id: { $in: acceptFriends },
         status: "active",
         deleted: false
     }).select("id avatar fullName");
 
     res.render("clients/pages/users/accept", {
-        pageTitle:"Chap nhan ket ban",
+        pageTitle: "Chap nhan ket ban",
         users: users,
+    })
+}
+
+module.exports.friends = async (req, res) => {
+
+    //SOCKET
+    usersSocket(res);
+    //END SOCKET
+
+    const userId = res.locals.user.id;
+
+    const myUser = await User.findOne({
+        _id: userId
+    })
+
+    const friendList = myUser.friendList;
+    const friendListId = friendList.map(item => item.user_id);
+
+    const users = await User.find({
+        _id: { $in: friendListId },
+        status: "active",
+        deleted: false
+    }).select("id avatar fullName statusOnline");
+
+    res.render("clients/pages/users/friends", {
+        pageTitle: "Danh sach ban be",
+        users: users
     })
 }

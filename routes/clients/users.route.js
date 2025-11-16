@@ -9,6 +9,9 @@ router.get("/request", controller.requestFriend);
 
 router.get("/accept", controller.acceptFriend);
 
+router.get("/friends", controller.friends);
+
+
 
 
 
