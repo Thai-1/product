@@ -6,8 +6,13 @@ if (formSendData) {
     formSendData.addEventListener("submit", (e) => {
         e.preventDefault();
         const content = e.target.elements.content.value;
+        const roomChatId = e.target.dataset.roomChatId;
         if (content) {
-            socket.emit("CLIENT_SEND_MESSAGE", content);
+            socket.emit("CLIENT_SEND_MESSAGE", {
+                content: content,
+                roomChatId: roomChatId
+            }
+            );
             e.target.elements.content.value = "";
             socket.emit("CLIENT_SEND_TYPING", "hidden");
 
@@ -98,53 +103,53 @@ if (emojiPicker) {
 
 // Input Keyup
 
-inputChat.addEventListener("keyup", () => {
+// inputChat.addEventListener("keyup", () => {
 
-    showTyping();
-})
+//     showTyping();
+// })
 
 //End Input Keyup
 
 //END SHOW ICON CHAT
 
-//SERVER_RETURN_TYPING
-const elementListTyping = document.querySelector(".chat .inner-list-typing");
+// //SERVER_RETURN_TYPING
+// const elementListTyping = document.querySelector(".chat .inner-list-typing");
 
-if (elementListTyping) {
-    socker.on("SERVER_RETURN_TYPING", (data) => {
-        console.log(data);
-        if (data.type == "show") {
-            const bodyChat = elementListTyping.querySelector(".chat .inner-body")
-            const existTyping = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
+// if (elementListTyping) {
+//     socker.on("SERVER_RETURN_TYPING", (data) => {
+//         console.log(data);
+//         if (data.type == "show") {
+//             const bodyChat = elementListTyping.querySelector(".chat .inner-body")
+//             const existTyping = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
 
-            if (!existTyping) {
-                const boxTyping = document.createElement("..");
-                boxTyping.classList.add("box-typing");
-                boxTyping.setAttribute("user-id", data.userId);
-                boxTyping.innerHTML = `
-                <div class="box-typing">
-                    <div class="inner-name">${data.fullName}</div>
-                    <div class="inner-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-            `;
+//             if (!existTyping) {
+//                 const boxTyping = document.createElement("..");
+//                 boxTyping.classList.add("box-typing");
+//                 boxTyping.setAttribute("user-id", data.userId);
+//                 boxTyping.innerHTML = `
+//                 <div class="box-typing">
+//                     <div class="inner-name">${data.fullName}</div>
+//                     <div class="inner-dots">
+//                         <span></span>
+//                         <span></span>
+//                         <span></span>
+//                     </div>
+//                 </div>
+//             `;
 
-                elementListTyping.appendChild(boxTyping);
-                bodyChat.scrollTop = bodyChat.scrollHeight;
-            }
-        }
-        else {
-            const boxTypingRemove = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
-            if (boxTypingRemove) {
-                elementListTyping.removeChild(boxTypingRemove);
-            }
-        }
-    })
-}
-//END SERVER_RETURN_TYPING
+//                 elementListTyping.appendChild(boxTyping);
+//                 bodyChat.scrollTop = bodyChat.scrollHeight;
+//             }
+//         }
+//         else {
+//             const boxTypingRemove = elementListTyping.querySelector(`[user-id] = "${data.userId}`)
+//             if (boxTypingRemove) {
+//                 elementListTyping.removeChild(boxTypingRemove);
+//             }
+//         }
+//     })
+// }
+// //END SERVER_RETURN_TYPING
 
 
 
