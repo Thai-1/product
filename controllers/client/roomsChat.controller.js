@@ -3,13 +3,25 @@ const RoomChat = require("../../models/rooms-chat.model")
 
 //[GET] /rooms-chat/
 module.exports.index = async (req, res) => {
+    
+    const userId = res.locals.user.id;
+
+    const listRoomChat = await RoomChat.find({
+        typeRoom: "group",
+        deleted: "false",
+        "users.user_id": userId
+
+    })
+
     res.render("clients/pages/rooms-chat/index", {
-        pageTitle: "RoomsChat"
+        pageTitle: "RoomsChat",
+        listRoomChat: listRoomChat
     })
 }
 
 //[GET] /rooms-chat/create
 module.exports.create = async (req, res) => {
+
 
     const friendList = res.locals.user.friendList;
     for (const friend of friendList) {
